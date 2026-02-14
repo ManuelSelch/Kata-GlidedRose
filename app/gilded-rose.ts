@@ -11,6 +11,9 @@ export class Item {
 }
 
 const MAX_QUALITY = 50;
+const AGED_BRIE = 'Aged Brie';
+const BACKSTAGE = 'Backstage passes to a TAFKAL80ETC concert';
+const SULFURAS = 'Sulfuras, Hand of Ragnaros';
 
 export class GildedRose {
   items: Array<Item>;
@@ -29,36 +32,38 @@ export class GildedRose {
 
   private updateItem(item: Item) {
     // “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
-    if (item.name == 'Sulfuras, Hand of Ragnaros') return
+    if (item.name == SULFURAS) return
     
 
-    if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
+    if (item.name != AGED_BRIE && item.name != BACKSTAGE) {
       if (item.quality > 0) {
         item.quality -= 1 // Quality of normal items drop
       }
     } else {
       if (item.quality < MAX_QUALITY) {
-        item.quality += 1
-        if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
-          if (item.sellIn < 11) {
+        
+        item.quality += 1 // Quality of Aged Brie increase by 1
+
+        if (item.name == BACKSTAGE) {
+          if (item.sellIn <= 10) {
             if (item.quality < MAX_QUALITY) {
-              item.quality += 1
+              item.quality += 1 // Quality of Backstage increases by 2
             }
           }
-          if (item.sellIn < 6) {
+          if (item.sellIn <= 5) {
             if (item.quality < MAX_QUALITY) {
-              item.quality += 1
+              item.quality += 1 // Quality of Backstage increases by 3
             }
           }
         }
       }
     }
     
-    item.sellIn -= 1; // sellIn drops
+    item.sellIn -= 1; // SellIn of every item drops
 
     if (item.sellIn < 0) {
-      if (item.name != 'Aged Brie') {
-        if (item.name != 'Backstage passes to a TAFKAL80ETC concert') {
+      if (item.name != AGED_BRIE) {
+        if (item.name != BACKSTAGE) {
           if (item.quality > 0) {
             item.quality -= 1
           }
