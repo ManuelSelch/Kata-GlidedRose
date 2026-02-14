@@ -34,19 +34,17 @@ export class GildedRose {
     // “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
     if (item.name == SULFURAS) return
     
-    if(item.name == AGED_BRIE)      this.updateAgedBrieQuality(item);
-    else if(item.name == BACKSTAGE) this.updateBackstageQuality(item);
-    else                            this.updateNormalQuality(item);
+    if(item.name == AGED_BRIE)      this.increaseQuality(item);
+    else if(item.name == BACKSTAGE) this.increaseBackstageQualityBySellIn(item);
+    else                            this.decreaseQuality(item);
 
     item.sellIn -= 1; // SellIn of every item drops
 
+    // Quality changes twices as fast once sellIn is zero
     if(item.sellIn >= 0) return;
 
     if(item.name == AGED_BRIE) {
-      if (item.quality < MAX_QUALITY) {
-        item.quality += 1
-      }
-      
+      this.increaseQuality(item); // Quality increases twice
       return;
     }
 
@@ -56,19 +54,16 @@ export class GildedRose {
     } 
 
     // normal item
-    if (item.quality > 0) {
-      item.quality -= 1 // quality increases by 2 once sellIn is zero
-    }
-    
+    this.decreaseQuality(item);
   }
 
-  private updateAgedBrieQuality(item: Item) {
+  private increaseQuality(item: Item) {
     if(item.quality >= MAX_QUALITY) return;
 
     item.quality += 1 // Quality of Aged Brie increase by 1
   }
 
-  private updateBackstageQuality(item: Item) {
+  private increaseBackstageQualityBySellIn(item: Item) {
     if(item.quality >= MAX_QUALITY) return;
     item.quality += 1 // Quality of Backstage increase by 1
     
@@ -79,7 +74,7 @@ export class GildedRose {
     item.quality += 1 // Quality of Backstage increases by 3
   }
 
-  private updateNormalQuality(item: Item) {
+  private decreaseQuality(item: Item) {
     if (item.quality <= 0) return;
 
     item.quality -= 1 // Quality of normal items drop
