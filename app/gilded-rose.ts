@@ -68,9 +68,9 @@ export class GildedRose {
   }
 
   private updateAgedBrieQuality(item: Item) {
-    if(item.quality < MAX_QUALITY) {
-      item.quality += 1 // Quality of Aged Brie increase by 1
-    }
+    if(item.quality >= MAX_QUALITY) return;
+
+    item.quality += 1 // Quality of Aged Brie increase by 1
   }
 
   private updateBackstageQuality(item: Item) {
