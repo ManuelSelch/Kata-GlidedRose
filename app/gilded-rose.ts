@@ -34,37 +34,32 @@ export class GildedRose {
     // “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
     if (item.name == SULFURAS) return
     
-    if(item.name == AGED_BRIE) {
-      this.updateAgedBrieQuality(item);
-    }
-
-    else if(item.name == BACKSTAGE) {
-      this.updateBackstageQuality(item);
-    }
-
-    else {
-      if (item.quality > 0) {
-        item.quality -= 1 // Quality of normal items drop
-      }
-    } 
+    if(item.name == AGED_BRIE)      this.updateAgedBrieQuality(item);
+    else if(item.name == BACKSTAGE) this.updateBackstageQuality(item);
+    else                            this.updateNormalQuality(item);
 
     item.sellIn -= 1; // SellIn of every item drops
 
-    if (item.sellIn < 0) {
-      if (item.name != AGED_BRIE) {
-        if (item.name != BACKSTAGE) {
-          if (item.quality > 0) {
-            item.quality -= 1
-          }
-        } else {
-          item.quality = 0 // Quality drops to 0 after the concert
-        }
-      } else {
-        if (item.quality < MAX_QUALITY) {
-          item.quality += 1
-        }
+    if(item.sellIn >= 0) return;
+
+    if(item.name == AGED_BRIE) {
+      if (item.quality < MAX_QUALITY) {
+        item.quality += 1
       }
+      
+      return;
     }
+
+    if(item.name == BACKSTAGE) {
+      item.quality = 0 // Quality drops to 0 after the concert
+      return;
+    } 
+
+    // normal item
+    if (item.quality > 0) {
+      item.quality -= 1 // quality increases by 2 once sellIn is zero
+    }
+    
   }
 
   private updateAgedBrieQuality(item: Item) {
@@ -82,5 +77,11 @@ export class GildedRose {
 
     if(item.sellIn > 5 || item.quality >= MAX_QUALITY) return;
     item.quality += 1 // Quality of Backstage increases by 3
+  }
+
+  private updateNormalQuality(item: Item) {
+    if (item.quality <= 0) return;
+
+    item.quality -= 1 // Quality of normal items drop
   }
 }
