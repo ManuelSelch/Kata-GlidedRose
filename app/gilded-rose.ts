@@ -34,24 +34,33 @@ export class GildedRose {
     // “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
     if (item.name == SULFURAS) return
     
-    if(item.name == AGED_BRIE)      this.increaseQuality(item);
-    else if(item.name == BACKSTAGE) this.increaseBackstageQualityBySellIn(item);
-    else                            this.decreaseQuality(item);
+    this.changeQuality(item);
 
     item.sellIn -= 1; // SellIn of every item drops
 
     // Quality changes twices as fast once sellIn is zero
     if(item.sellIn >= 0) return;
 
-    if(item.name == AGED_BRIE) {
-      this.increaseQuality(item); // Quality increases twice
-      return;
-    }
-
     if(item.name == BACKSTAGE) {
       item.quality = 0 // Quality drops to 0 after the concert
       return;
     } 
+
+    this.changeQuality(item);
+  }
+
+  private changeQuality(item: Item) {
+    // aged brie item
+    if(item.name == AGED_BRIE) {
+      this.increaseQuality(item);
+      return;
+    }
+
+    // backstage item
+    if(item.name == BACKSTAGE) {
+      this.increaseBackstageQualityBySellIn(item);
+      return;
+    }
 
     // normal item
     this.decreaseQuality(item);
