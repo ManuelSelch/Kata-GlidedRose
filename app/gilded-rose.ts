@@ -35,26 +35,11 @@ export class GildedRose {
     if (item.name == SULFURAS) return
     
     if(item.name == AGED_BRIE) {
-      if(item.quality < MAX_QUALITY) {
-        item.quality += 1 // Quality of Aged Brie increase by 1
-      }
+      this.updateAgedBrieQuality(item);
     }
-    
+
     else if(item.name == BACKSTAGE) {
-      if(item.quality < MAX_QUALITY) {
-        item.quality += 1 // Quality of Backstage increase by 1
-        
-        if (item.sellIn <= 10) {
-          if (item.quality < MAX_QUALITY) {
-            item.quality += 1 // Quality of Backstage increases by 2
-          }
-        }
-        if (item.sellIn <= 5) {
-          if (item.quality < MAX_QUALITY) {
-            item.quality += 1 // Quality of Backstage increases by 3
-          }
-        }
-      }
+      this.updateBackstageQuality(item);
     }
 
     else {
@@ -77,6 +62,29 @@ export class GildedRose {
       } else {
         if (item.quality < MAX_QUALITY) {
           item.quality += 1
+        }
+      }
+    }
+  }
+
+  private updateAgedBrieQuality(item: Item) {
+    if(item.quality < MAX_QUALITY) {
+      item.quality += 1 // Quality of Aged Brie increase by 1
+    }
+  }
+
+  private updateBackstageQuality(item: Item) {
+    if(item.quality < MAX_QUALITY) {
+      item.quality += 1 // Quality of Backstage increase by 1
+      
+      if (item.sellIn <= 10) {
+        if (item.quality < MAX_QUALITY) {
+          item.quality += 1 // Quality of Backstage increases by 2
+        }
+      }
+      if (item.sellIn <= 5) {
+        if (item.quality < MAX_QUALITY) {
+          item.quality += 1 // Quality of Backstage increases by 3
         }
       }
     }
