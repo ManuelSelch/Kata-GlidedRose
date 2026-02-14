@@ -10,6 +10,8 @@ export class Item {
   }
 }
 
+const MAX_QUALITY = 50;
+
 export class GildedRose {
   items: Array<Item>;
 
@@ -32,19 +34,19 @@ export class GildedRose {
 
     if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
       if (item.quality > 0) {
-        item.quality -= 1
+        item.quality -= 1 // Quality of normal items drop
       }
     } else {
-      if (item.quality < 50) {
+      if (item.quality < MAX_QUALITY) {
         item.quality += 1
         if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
           if (item.sellIn < 11) {
-            if (item.quality < 50) {
+            if (item.quality < MAX_QUALITY) {
               item.quality += 1
             }
           }
           if (item.sellIn < 6) {
-            if (item.quality < 50) {
+            if (item.quality < MAX_QUALITY) {
               item.quality += 1
             }
           }
@@ -52,7 +54,7 @@ export class GildedRose {
       }
     }
     
-    item.sellIn -= 1;
+    item.sellIn -= 1; // sellIn drops
 
     if (item.sellIn < 0) {
       if (item.name != 'Aged Brie') {
@@ -64,7 +66,7 @@ export class GildedRose {
           item.quality = 0 // Quality drops to 0 after the concert
         }
       } else {
-        if (item.quality < 50) {
+        if (item.quality < MAX_QUALITY) {
           item.quality += 1
         }
       }
