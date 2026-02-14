@@ -57,21 +57,20 @@ export class GildedRose {
     this.decreaseQuality(item);
   }
 
+  private increaseBackstageQualityBySellIn(item: Item) {
+    this.increaseQuality(item);   // Quality of Backstage increase by 1
+    
+    if(item.sellIn <= 10)
+      this.increaseQuality(item); // Quality of Backstage increases by 2
+
+    if(item.sellIn <= 5)
+      this.increaseQuality(item); // Quality of Backstage increases by 3
+  }
+
   private increaseQuality(item: Item) {
     if(item.quality >= MAX_QUALITY) return;
 
     item.quality += 1 // Quality of Aged Brie increase by 1
-  }
-
-  private increaseBackstageQualityBySellIn(item: Item) {
-    if(item.quality >= MAX_QUALITY) return;
-    item.quality += 1 // Quality of Backstage increase by 1
-    
-    if(item.sellIn > 10 || item.quality >= MAX_QUALITY) return;
-    item.quality += 1 // Quality of Backstage increases by 2
-
-    if(item.sellIn > 5 || item.quality >= MAX_QUALITY) return;
-    item.quality += 1 // Quality of Backstage increases by 3
   }
 
   private decreaseQuality(item: Item) {
