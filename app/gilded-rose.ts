@@ -34,31 +34,35 @@ export class GildedRose {
     // “Sulfuras”, being a legendary item, never has to be sold or decreases in Quality
     if (item.name == SULFURAS) return
     
-
-    if (item.name != AGED_BRIE && item.name != BACKSTAGE) {
-      if (item.quality > 0) {
-        item.quality -= 1 // Quality of normal items drop
-      }
-    } else {
-      if (item.quality < MAX_QUALITY) {
-        
+    if(item.name == AGED_BRIE) {
+      if(item.quality < MAX_QUALITY) {
         item.quality += 1 // Quality of Aged Brie increase by 1
-
-        if (item.name == BACKSTAGE) {
-          if (item.sellIn <= 10) {
-            if (item.quality < MAX_QUALITY) {
-              item.quality += 1 // Quality of Backstage increases by 2
-            }
+      }
+    }
+    
+    else if(item.name == BACKSTAGE) {
+      if(item.quality < MAX_QUALITY) {
+        item.quality += 1 // Quality of Backstage increase by 1
+        
+        if (item.sellIn <= 10) {
+          if (item.quality < MAX_QUALITY) {
+            item.quality += 1 // Quality of Backstage increases by 2
           }
-          if (item.sellIn <= 5) {
-            if (item.quality < MAX_QUALITY) {
-              item.quality += 1 // Quality of Backstage increases by 3
-            }
+        }
+        if (item.sellIn <= 5) {
+          if (item.quality < MAX_QUALITY) {
+            item.quality += 1 // Quality of Backstage increases by 3
           }
         }
       }
     }
-    
+
+    else {
+      if (item.quality > 0) {
+        item.quality -= 1 // Quality of normal items drop
+      }
+    } 
+
     item.sellIn -= 1; // SellIn of every item drops
 
     if (item.sellIn < 0) {
