@@ -23,10 +23,10 @@ export class GildedRose {
   }
 
   updateQuality() {
-    for (let i = 0; i < this.items.length; i++) {
-      this.updateItem(this.items[i]);
-    }
-
+    this.items.forEach(item => {
+      this.updateItem(item);
+    });
+    
     return this.items;
   }
 
@@ -36,17 +36,11 @@ export class GildedRose {
     
     this.changeQuality(item);
 
-    item.sellIn -= 1; // SellIn of every item drops
+    this.decreaseSellIn(item);
 
     // Quality changes twices as fast once sellIn is zero
-    if(item.sellIn >= 0) return;
-
-    if(item.name == BACKSTAGE) {
-      item.quality = 0 // Quality drops to 0 after the concert
-      return;
-    } 
-
-    this.changeQuality(item);
+    if(item.sellIn < 0)
+      this.changeQuality(item);
   }
 
   private changeQuality(item: Item) {
@@ -67,6 +61,11 @@ export class GildedRose {
   }
 
   private increaseBackstageQualityBySellIn(item: Item) {
+    if(item.sellIn <= 0) {
+      item.quality = 0;           // Quality drops to 0 after the concert
+      return;
+    }
+
     this.increaseQuality(item);   // Quality of Backstage increase by 1
     
     if(item.sellIn <= 10)
@@ -86,5 +85,9 @@ export class GildedRose {
     if (item.quality <= 0) return;
 
     item.quality -= 1 // Quality of normal items drop
+  }
+
+  private decreaseSellIn(item: Item) {
+    item.sellIn -= 1; // SellIn of every item drops
   }
 }
